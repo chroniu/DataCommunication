@@ -28,7 +28,7 @@ public class GUI extends Application implements MessageListener {
 
 		final Label labelIp = new Label("Endereço");
 		final Label labelPorta = new Label("Porta");
-
+ 
 		final TextField textFieldIpAddress = new TextField("224.0.0.1");
 		final TextField textFielPorta = new TextField("6000");
 		
