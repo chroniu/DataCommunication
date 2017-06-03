@@ -8,13 +8,13 @@ import java.util.Arrays;
 public class DifferentialManchester {
 	
 	/**
-	 * Transforms a String into an array of bytes, encoding the characters into ascii
+	 * Transforms a String into an array of bytes, encoding the characters @charset
 	 * @param str
 	 * @return
 	 */
-	public static byte[] getAssciRepresentation(String str) {
+	public static byte[] getByteRepresentation(String str, String charset) {
 		try {
-			return str.getBytes("US-ASCII");
+			return str.getBytes(charset);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
@@ -23,12 +23,12 @@ public class DifferentialManchester {
 	
 	/**
 	 * Transforms an array of bytes into an ascii string
-	 * @param ascii
+	 * @param codified
 	 * @return
 	 */
-	public static String getStringFromByteArray(byte[] ascii) {
+	public static String getStringFromByteArray(byte[] codified, String charset) {
 		try {
-			return new String(ascii, "US-ASCII");
+			return new String(codified, charset);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
@@ -123,15 +123,6 @@ public class DifferentialManchester {
 				manchester[i * 2] = !manchester[i * 2 - 1];
 				manchester[i * 2 + 1] = !manchester[i * 2];
 			}
-			// if(binaryData[i] != binaryData[i-1]){
-			// manchester[i * 2] = true;
-			// manchester[i * 2 + 1] = false;
-			//
-			// }else{
-			// manchester[i * 2] = false;
-			// manchester[i * 2 + 1] = true;
-			//
-			// }
 		}
 
 		return manchester;
@@ -162,7 +153,7 @@ public class DifferentialManchester {
 	}
 
 	public static void main(String args[]) {
-		byte[] ascciRepresentation = getAssciRepresentation("abc");
+		byte[] ascciRepresentation = getByteRepresentation("abc","UTF-8");
 		boolean[] binaryRepresentation = byteArrayToBinaryArray(ascciRepresentation);
 
 		boolean[] testData = { false, false, false, true, true, true, false, true, false, true };
@@ -175,7 +166,7 @@ public class DifferentialManchester {
 		
 		assert(testExpectedResult.equals(encodedData));
 		assert(testData.equals(decodedData));
-		assert(getStringFromByteArray(booleanArrayToByteArray(binaryRepresentation)).equals("abc"));
+		assert(getStringFromByteArray(booleanArrayToByteArray(binaryRepresentation),"UTF-8").equals("abc"));
 		
 
 		System.out.println("Testes Sucesso");

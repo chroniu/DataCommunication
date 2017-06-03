@@ -1,8 +1,4 @@
-import java.io.IOException;
-import java.util.Arrays;
-
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -10,13 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUI extends Application implements MessageListener {
+	private static String CHAR_SET = "ISO-8859-1";
+	
 	private TextArea textArreaManchesterRecebido;
 	private TextArea textArreaAsciiRecebido;
 	private TextArea textArreaMensagemRecebida;
@@ -28,7 +24,7 @@ public class GUI extends Application implements MessageListener {
 
 		final Label labelIp = new Label("Endereço");
 		final Label labelPorta = new Label("Porta");
- 
+
 		final TextField textFieldIpAddress = new TextField("224.0.0.1");
 		final TextField textFielPorta = new TextField("6000");
 		
@@ -66,16 +62,16 @@ public class GUI extends Application implements MessageListener {
 //		flowPaneConfigMulticast.setBackground();
 		flowPaneConfigMulticast.setStyle("-fx-background-color: #00FF00");
 		////////////////////////////////////////////////////////// PAnel ASCII Envio
-		final Label labelAsscii = new Label("String em Ascii");
+		final Label labelCoded = new Label("String binária");
 		final TextArea textArreaAscii = new TextArea();
 		textArreaAscii.setPrefColumnCount(43);
 		textArreaAscii.setPrefRowCount(4);
 		
-		FlowPane flowPaneAscii = new FlowPane();
-		flowPaneAscii.getChildren().add(labelAsscii);
-		flowPaneAscii.getChildren().add(textArreaAscii);
-		flowPaneAscii.setHgap(10);
-		flowPaneAscii.setVgap(10);
+		FlowPane flowPaneByteCoded = new FlowPane();
+		flowPaneByteCoded.getChildren().add(labelCoded);
+		flowPaneByteCoded.getChildren().add(textArreaAscii);
+		flowPaneByteCoded.setHgap(10);
+		flowPaneByteCoded.setVgap(10);
 		////////////////////////////////////////////////////////// Panel String Envio
 		////////////////////////////////////////////////////////// Manchester
 		////////////////////////////////////////////////////////// Diferencial
@@ -102,7 +98,7 @@ public class GUI extends Application implements MessageListener {
 		
 		btnSendData.setOnAction(action -> {
 			try {
-				byte [] ascii  = DifferentialManchester.getAssciRepresentation(textFielMessage.getText());
+				byte [] ascii  = DifferentialManchester.getByteRepresentation(textFielMessage.getText(), CHAR_SET);
 				boolean[] asciiBool = DifferentialManchester.byteArrayToBinaryArray(ascii);
 				boolean[] dataSend = DifferentialManchester.encodeToDifferentialManchester(asciiBool);
 				byte [] data = DifferentialManchester.booleanArrayToByteArray(dataSend);
@@ -136,7 +132,7 @@ public class GUI extends Application implements MessageListener {
 		textArreaManchesterRecebido.setPrefColumnCount(43);
 		textArreaManchesterRecebido.setPrefRowCount(4);
 		
-		final Label labelAsciiRecebido = new Label("Ascii em binário Recebido");
+		final Label labelAsciiRecebido = new Label("String binária Recebida");
 		textArreaAsciiRecebido = new TextArea();
 		textArreaAsciiRecebido.setPrefColumnCount(43);
 		textArreaAsciiRecebido.setPrefRowCount(4);
@@ -165,7 +161,7 @@ public class GUI extends Application implements MessageListener {
 		///////////////////////////////////////////////////////////////////////////// a
 		///////////////////////////////////////////////////////////////////////////// cena
 
-		VBox vbox = new VBox(flowPaneConfigMulticast, flowPaneSendData, flowPaneAscii, flowPaneManchester, flowPaneManchesterRecebido);
+		VBox vbox = new VBox(flowPaneConfigMulticast, flowPaneSendData, flowPaneByteCoded, flowPaneManchester, flowPaneManchesterRecebido);
 		Scene scene = new Scene(vbox, 600, 700);
 		stage.setScene(scene);
 		stage.show();
@@ -180,10 +176,10 @@ public class GUI extends Application implements MessageListener {
 	public void messageReceivedUpdate(byte[] data) {
 		boolean [] manchesterEnconded = DifferentialManchester.byteArrayToBinaryArray(data);
 		boolean [] manchesterDecoded = DifferentialManchester.decodeFromDifferentialManchester(manchesterEnconded);
-		byte [] asciiData = DifferentialManchester.booleanArrayToByteArray(manchesterDecoded);
+		byte [] codedData = DifferentialManchester.booleanArrayToByteArray(manchesterDecoded);
 		textArreaManchesterRecebido.setText(DifferentialManchester.booleanArrayToString(manchesterEnconded));
 		textArreaAsciiRecebido.setText(DifferentialManchester.booleanArrayToString(manchesterDecoded));
-		textArreaMensagemRecebida.setText(DifferentialManchester.getStringFromByteArray(asciiData));
+		textArreaMensagemRecebida.setText(DifferentialManchester.getStringFromByteArray(codedData, CHAR_SET));
 
 	}
 
