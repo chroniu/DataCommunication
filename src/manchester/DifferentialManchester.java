@@ -1,5 +1,6 @@
+package manchester;
+
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 
 /**
  * 

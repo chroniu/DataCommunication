@@ -1,3 +1,5 @@
+package manchester;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,24 +22,24 @@ public class GUI extends Application implements MessageListener {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-		stage.setTitle("Comunicação de Dados - Manchester Diferencial");
+		stage.setTitle("Data Communication - Differential Manchester");
 
-		final Label labelIp = new Label("Endereço");
-		final Label labelPorta = new Label("Porta");
+		final Label labelIp = new Label("Address");
+		final Label labelPort = new Label("Port");
 
 		final TextField textFieldIpAddress = new TextField("224.0.0.1");
-		final TextField textFielPorta = new TextField("6000");
+		final TextField textFielPort = new TextField("6000");
 		
-		Button btnSetMulticast = new Button("Configurar");
+		Button btnSetMulticast = new Button("Configure");
 		btnSetMulticast.setOnAction(action -> {
 			try {
-				MultiCastServer.replaceInstance(textFieldIpAddress.getText(), Integer.parseInt(textFielPorta.getText()),
+				MultiCastServer.replaceInstance(textFieldIpAddress.getText(), Integer.parseInt(textFielPort.getText()),
 						this);
 				(new Thread(MultiCastServer.getInstance())).start();
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Erro");
-				alert.setHeaderText("Erro ao criar Servlet");
+				alert.setTitle("Error");
+				alert.setHeaderText("Error during Servlet creation");
 				alert.setContentText(e.getMessage());
 
 				alert.showAndWait();
@@ -47,14 +49,14 @@ public class GUI extends Application implements MessageListener {
 		});
 		
 		textFieldIpAddress.setPrefColumnCount(16);
-		textFielPorta.setPrefColumnCount(10);
+		textFielPort.setPrefColumnCount(10);
 
 		FlowPane flowPaneConfigMulticast = new FlowPane();
 
 		flowPaneConfigMulticast.getChildren().add(labelIp);
 		flowPaneConfigMulticast.getChildren().add(textFieldIpAddress);
-		flowPaneConfigMulticast.getChildren().add(labelPorta);
-		flowPaneConfigMulticast.getChildren().add(textFielPorta);
+		flowPaneConfigMulticast.getChildren().add(labelPort);
+		flowPaneConfigMulticast.getChildren().add(textFielPort);
 		flowPaneConfigMulticast.getChildren().add(btnSetMulticast);
 
 		flowPaneConfigMulticast.setHgap(10);
@@ -62,7 +64,7 @@ public class GUI extends Application implements MessageListener {
 //		flowPaneConfigMulticast.setBackground();
 		flowPaneConfigMulticast.setStyle("-fx-background-color: #00FF00");
 		////////////////////////////////////////////////////////// PAnel ASCII Envio
-		final Label labelCoded = new Label("String binária");
+		final Label labelCoded = new Label("Binary String");
 		final TextArea textArreaAscii = new TextArea();
 		textArreaAscii.setPrefColumnCount(43);
 		textArreaAscii.setPrefRowCount(4);
@@ -90,11 +92,11 @@ public class GUI extends Application implements MessageListener {
 		//////////////////////////////////////////////////////////////// Envio
 		//////////////////////////////////////////////////////////////// de
 		//////////////////////////////////////////////////////////////// mensagem
-		final Label labelMessage = new Label("Mensagem");
-		final TextField textFielMessage = new TextField("Mensagem a ser enviada");
+		final Label labelMessage = new Label("Message");
+		final TextField textFielMessage = new TextField("Message to be sent");
 		textFielMessage.setPrefColumnCount(35);
 
-		Button btnSendData = new Button("enviar");
+		Button btnSendData = new Button("Send");
 		
 		btnSendData.setOnAction(action -> {
 			try {
@@ -108,8 +110,8 @@ public class GUI extends Application implements MessageListener {
 				MultiCastServer.getInstance().sendMessage(data);
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Erro");
-				alert.setHeaderText("Erro ao enviar Servlet");
+				alert.setTitle("Error");
+				alert.setHeaderText("Error sending Servlet");
 				alert.setContentText(e.getMessage());
 				alert.showAndWait();
 				e.printStackTrace();
@@ -127,18 +129,18 @@ public class GUI extends Application implements MessageListener {
 		//////////////////////////////////////////////////////////Panel String Recebimento
 		////////////////////////////////////////////////////////// Manchester
 		////////////////////////////////////////////////////////// Diferencial
-		final Label labelManchesterRecebido = new Label("Manchester Recebido");
+		final Label labelManchesterRecebido = new Label("Manchester Received");
 		textArreaManchesterRecebido = new TextArea();
 		textArreaManchesterRecebido.setPrefColumnCount(43);
 		textArreaManchesterRecebido.setPrefRowCount(4);
 		
-		final Label labelAsciiRecebido = new Label("String binária Recebida");
+		final Label labelAsciiRecebido = new Label("Binary String Received");
 		textArreaAsciiRecebido = new TextArea();
 		textArreaAsciiRecebido.setPrefColumnCount(43);
 		textArreaAsciiRecebido.setPrefRowCount(4);
 
 		
-		final Label labelMensagemRecebida = new Label("Mensagem Recebida");
+		final Label labelMensagemRecebida = new Label("Message received");
 		textArreaMensagemRecebida = new TextArea();
 		textArreaMensagemRecebida.setPrefColumnCount(43);
 		textArreaMensagemRecebida.setPrefRowCount(4);

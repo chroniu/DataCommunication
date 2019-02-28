@@ -1,3 +1,5 @@
+package manchester;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -5,8 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.ServerSocket;
 import java.util.Arrays;
-
-import org.omg.PortableInterceptor.SUCCESSFUL;
 
 /**
  * Classe atua como um servidor Multicast. Possui funções de envio e recebimento
@@ -28,7 +28,7 @@ class MultiCastServer implements Runnable {
 	private byte[] lastMessage;//gambi
 
 	/**
-	 * Contrutor
+	 * Contructor
 	 * 
 	 * @param address
 	 *            String com o endereço do multicast

@@ -1,3 +1,4 @@
+package manchester;
 
 public class Util {
 	public static byte[] range (byte[] src, int init, int end){
